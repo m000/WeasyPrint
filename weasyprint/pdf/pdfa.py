@@ -17,13 +17,18 @@ import pydyf
 from ..logger import LOGGER
 from .metadata import add_metadata
 
+_compat_warning_logged = False
+
 
 def pdfa(pdf, metadata, document, page_streams, compress, version):
     """Set metadata for PDF/A documents."""
-    LOGGER.warning(
-        'PDF/A support is experimental, '
-        'generated PDF files are not guaranteed to be valid. '
-        'Please open an issue if you have problems generating PDF/A files.')
+    global _compat_warning_logged
+    if not _compat_warning_logged:
+        LOGGER.warning(
+            'PDF/A support is experimental, generated PDF files are not '
+            'guaranteed to be valid. Please open an issue if you have problems '
+            'generating PDF/A files.')
+        _compat_warning_logged = True
 
     # Add ICC profile
     profile = pydyf.Stream(
